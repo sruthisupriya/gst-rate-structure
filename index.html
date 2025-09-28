@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GST Value Chain Mapping - Comprehensive Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .main-layout {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: #2c3e50;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: -280px;
+            height: 100vh;
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            background: #34495e;
+            border-bottom: 1px solid #4a5f7a;
+        }
+
+        .sidebar-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #ecf0f1;
+        }
+
+        .sidebar-nav {
+            padding: 1rem 0;
+        }
+
+        .nav-item {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-bottom: 1px solid #34495e;
+        }
+
+        .nav-item:hover {
+            background: #34495e;
+        }
+
+        .nav-item.active {
+            background: #667eea;
+            border-left: 4px solid #fff;
+        }
+
+        .nav-item i {
+            margin-right: 0.8rem;
+            width: 16px;
+        }
+
+        .sub-nav {
+            padding-left: 2.5rem;
+            background: #34495e;
+        }
+
+        .sub-nav-item {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .sub-nav-item:hover {
+            background: #4a5f7a;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+        }
+
+        .content-wrapper.sidebar-open {
+            margin-left: 280px;
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            z-index: 1001;
+            transition: background-color 0.2s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .sidebar-toggle:hover {
+            background: #5a6db8;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .metadata {
+            background: white;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .metadata-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .metadata-item strong {
+            display: block;
+            font-size: 1.5rem;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .section {
+            background: white;
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #eee;
+        }
+
+        .archetype-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .archetype-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            background: #fafafa;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .archetype-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .archetype-card h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .archetype-card p {
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        .hsn-chapters {
+            background: #e8f2ff;
+            padding: 0.8rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+        }
+
+        .hsn-chapters strong {
+            color: #1976d2;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .service-sector {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .service-sector-header {
+            background: #667eea;
+            color: white;
+            padding: 1rem;
+            font-weight: bold;
+        }
+
+        .service-item {
+            padding: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .service-item:last-child {
+            border-bottom: none;
+        }
+
+        .service-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-details {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .gst-rate {
+            display: inline-block;
+            background: #4caf50;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin: 0.5rem 0;
+        }
+
+        .rcm-badge {
+            display: inline-block;
+            background: #ff9800;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+
+        .exempt-badge {
+            background: #2196f3;
+        }
+
+        .value-chain {
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .value-chain h4 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .stage {
+            background: white;
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+        }
+
+        .stage-header {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .compliance-item {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .compliance-item h4 {
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+
+        .update-item {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .update-item h4 {
+            color: #0c5460;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 8px 8px 0 0;
+            overflow: hidden;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            background: #e9ecef;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .nav-tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .nav-tab:hover {
+            background: #5a6db8;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .archetype-grid,
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                width: 100%;
+                left: -100%;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .content-wrapper.sidebar-open {
+                margin-left: 0;
+            }
+
+            .sidebar-toggle {
+                top: 10px;
+                left: 10px;
+                padding: 0.6rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .sidebar-toggle {
+                display: none;
+            }
+
+            .sidebar {
+                left: 0;
+                position: fixed;
+            }
+
+            .content-wrapper {
+                margin-left: 280px;
+            }
+
+            .sidebar-overlay {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-layout">
+        <!-- Sidebar Toggle Button -->
+        <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+
+        <!-- Sidebar Overlay for Mobile -->
+        <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>📊 Navigation</h3>
+            </div>
+            <div class="sidebar-nav">
+                <div class="nav-item active" onclick="scrollToSection('archetypes')">
+                    <span>🔄 Process Archetypes</span>
+                </div>
+                <div class="sub-nav">
+                    <div class="sub-nav-item" onclick="scrollToSection('archetype-agri')">🌾 Agricultural to Food</div>
+                    <div class="sub-nav-item" onclick="scrollToSection('archetype-mineral')">⛏️ Mineral to Industrial</div>
+                    <div class="sub-nav-item" onclick="scrollToSection('archetype-assembly')">🔧 Component Assembly</div>
+                    <div class="sub-nav-item" onclick="scrollToSection('archetype-textile')">🧵 Fibre to Apparel</div>
+                </div>
+                <div class="nav-item" onclick="showTab('services')">
+                    <span>🏢 Services Directory</span>
+                </div>
+                <div class="sub-nav">
+                    <div class="sub-nav-item" onclick="scrollToSection('financial-services')">💰 Financial Services</div>
+                    <div class="sub-nav-item" onclick="scrollToSection('transport-services')">🚚 Transport Services</div>
+                    <div class="sub-nav-item" onclick="scrollToSection('professional-services')">⚖️ Professional Services</div>
+                    <div class="sub-nav-item" onclick="scrollToSection('education-health')">🎓 Education & Health</div>
+                </div>
+                <div class="nav-item" onclick="showTab('goods')">
+                    <span>📦 Goods Directory</span>
+                </div>
+                <div class="sub-nav">
+                    <div class="sub-nav-item" onclick="scrollToSection('wheat-biscuit')">🌾 Wheat to Biscuit</div>
+                    <div class="sub-nav-item" onclick="scrollToSection('iron-steel')">⛏️ Iron Ore to Steel</div>
+                    <div class="sub-nav-item" onclick="scrollToSection('auto-assembly')">🚗 Auto Assembly</div>
+                    <div class="sub-nav-item" onclick="scrollToSection('cotton-textile')">🧵 Cotton to Textile</div>
+                </div>
+                <div class="nav-item" onclick="showTab('concepts')">
+                    <span>📚 GST Concepts</span>
+                </div>
+                <div class="sub-nav">
+                    <div class="sub-nav-item" onclick="scrollToSection('special-provisions')">⚙️ Special Provisions</div>
+                    <div class="sub-nav-item" onclick="scrollToSection('compliance-calendar')">📅 Compliance Calendar</div>
+                    <div class="sub-nav-item" onclick="scrollToSection('recent-updates')">🆕 Recent Updates</div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Wrapper -->
+        <div class="content-wrapper" id="contentWrapper">
+            <header>
+                <div class="container">
+                    <h1>GST Value Chain Mapping</h1>
+                    <p class="subtitle">Comprehensive Guide to GST Structure & Process Archetypes</p>
+                </div>
+            </header>
+
+            <div class="container">
+
+        <div class="section" id="archetypes">
+            <h2>Process Archetypes</h2>
+            <p>These four archetypal patterns capture the most common GST value chain structures across different industries:</p>
+
+            <div class="archetype-grid">
+                <div class="archetype-card" id="archetype-agri">
+                    <h3>🌾 Raw Agricultural to Processed Food</h3>
+                    <p>Starts with an exempt farm product, involves primary processing (mandi, miller), and ends with a packaged, branded retail product. Often features RCM on intermediary services and an initial break in the ITC chain.</p>
+                    <div class="hsn-chapters">
+                        <strong>Applicable HSN Chapters:</strong><br>
+                        04 (Dairy), 08 (Fruits & Nuts), 10 (Cereals), 12 (Oil Seeds)
+                    </div>
+                </div>
+
+                <div class="archetype-card" id="archetype-mineral">
+                    <h3>⛏️ Raw Mineral to Finished Industrial Good</h3>
+                    <p>Begins with mining/extraction, moves through heavy industrial processing (smelting, refining), and results in finished goods for construction or further manufacturing. Features a continuous ITC chain and non-GST levies like royalties.</p>
+                    <div class="hsn-chapters">
+                        <strong>Applicable HSN Chapters:</strong><br>
+                        25 (Stone, Cement), 26 (Ores), 72 (Iron & Steel), 76 (Aluminium)
+                    </div>
+                </div>
+
+                <div class="archetype-card" id="archetype-assembly">
+                    <h3>🔧 Multi-Stage Component Assembly</h3>
+                    <p>Involves sourcing numerous high-tax components, followed by factory assembly and testing. The final product is often subject to both a high GST rate and a Compensation Cess.</p>
+                    <div class="hsn-chapters">
+                        <strong>Applicable HSN Chapters:</strong><br>
+                        84 (Machinery, engines), 85 (Electrical Machinery), 87 (Vehicles)
+                    </div>
+                </div>
+
+                <div class="archetype-card" id="archetype-textile">
+                    <h3>🧵 Fibre to Finished Apparel (Inverted Duty)</h3>
+                    <p>A chain from raw fibre through spinning, weaving, chemical processing (dyeing), and finally garmenting. Characterized by an 'Inverted Duty Structure' where key inputs (e.g., dyes at 18%) are taxed higher than the output (e.g., fabric at 5%).</p>
+                    <div class="hsn-chapters">
+                        <strong>Applicable HSN Chapters:</strong><br>
+                        Chapters 50-63 (Textiles), Chapter 41-42 (Hides, Leather)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="switchTab('services', this)">Services Directory</button>
+                <button class="nav-tab" onclick="switchTab('goods', this)">Goods Directory</button>
+                <button class="nav-tab" onclick="switchTab('concepts', this)">GST Concepts</button>
+            </div>
+
+            <div id="services" class="tab-content active">
+                <h2>Services Directory</h2>
+                <input type="text" class="search-box" placeholder="Search services..." onkeyup="searchServices(this.value)">
+
+                <div class="services-grid" id="services-grid">
+                    <div class="service-sector" id="financial-services">
+                        <div class="service-sector-header">Financial & Insurance Services</div>
+                        <div class="service-item">
+                            <div class="service-name">Loan & Advance Services</div>
+                            <div class="service-details">
+                                SAC: 9971<br>
+                                Services related to lending, including processing fees, documentation charges, etc.
+                            </div>
+                            <span class="gst-rate">18%</span>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-name">Insurance Premiums</div>
+                            <div class="service-details">
+                                SAC: 9971<br>
+                                General and life insurance services. Exemptions apply to certain government schemes.
+                            </div>
+                            <span class="gst-rate">18%</span>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-name">Asset Management Services</div>
+                            <div class="service-details">
+                                SAC: 9971<br>
+                                Services by mutual funds, portfolio managers.
+                            </div>
+                            <span class="gst-rate">18%</span>
+                        </div>
+                    </div>
+
+                    <div class="service-sector" id="transport-services">
+                        <div class="service-sector-header">Transport Services</div>
+                        <div class="service-item">
+                            <div class="service-name">Goods Transport Agency (GTA)</div>
+                            <div class="service-details">
+                                SAC: 9965<br>
+                                Transport of goods by road. Tax is paid by the recipient under RCM by default at 5%.
+                            </div>
+                            <span class="gst-rate">5% (RCM) or 12%</span>
+                            <span class="rcm-badge">RCM</span>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-name">Warehousing Services</div>
+                            <div class="service-details">
+                                SAC: 9967<br>
+                                Storage and warehousing services for goods, including cold storage.
+                            </div>
+                            <span class="gst-rate">18%</span>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-name">Courier Agency Services</div>
+                            <div class="service-details">
+                                SAC: 9966<br>
+                                Door-to-door transportation of time-sensitive documents and parcels.
+                            </div>
+                            <span class="gst-rate">18%</span>
+                        </div>
+                    </div>
+
+                    <div class="service-sector" id="professional-services">
+                        <div class="service-sector-header">Professional & Legal Services</div>
+                        <div class="service-item">
+                            <div class="service-name">Legal Services</div>
+                            <div class="service-details">
+                                SAC: 9982<br>
+                                Legal advisory and representation services by advocates.
+                            </div>
+                            <span class="gst-rate">18%</span>
+                            <span class="rcm-badge">RCM</span>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-name">Auditing and Accounting Services</div>
+                            <div class="service-details">
+                                SAC: 9982<br>
+                                Statutory audit, internal audit, and bookkeeping services.
+                            </div>
+                            <span class="gst-rate">18%</span>
+                        </div>
+                    </div>
+
+                    <div class="service-sector" id="education-health">
+                        <div class="service-sector-header">Education & Health Services</div>
+                        <div class="service-item">
+                            <div class="service-name">Higher Education Services</div>
+                            <div class="service-details">
+                                SAC: 9992<br>
+                                Educational services by approved institutions are exempt from GST.
+                            </div>
+                            <span class="gst-rate exempt-badge">Exempt</span>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-name">Healthcare Services</div>
+                            <div class="service-details">
+                                SAC: 9993<br>
+                                Services by clinical establishments and medical practitioners are exempt.
+                            </div>
+                            <span class="gst-rate exempt-badge">Exempt</span>
+                        </div>
+                    </div>
+
+                    <div class="service-sector">
+                        <div class="service-sector-header">Accommodation & Food Services</div>
+                        <div class="service-item">
+                            <div class="service-name">Restaurant Services</div>
+                            <div class="service-details">
+                                SAC: 9963<br>
+                                Supply of food and beverages by restaurants. No ITC is available.
+                            </div>
+                            <span class="gst-rate">5%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="goods" class="tab-content">
+                <h2>Goods Directory & Value Chains</h2>
+
+                <div class="value-chain" id="wheat-biscuit">
+                    <h4>🌾 Wheat to Biscuit Value Chain (Agricultural Archetype)</h4>
+
+                    <div class="stage">
+                        <div class="stage-header">Stage 1: Farmer → Mandi/APMC</div>
+                        <p><strong>Product:</strong> Wheat (HSN: 1001) - 0% GST (Exempt)</p>
+                        <p><strong>Hidden Charges:</strong> Mandi Cess (1-3%), Palledari, Quality Deductions</p>
+                        <p><strong>Note:</strong> Initial transaction is exempt, breaking the credit chain from start.</p>
+                    </div>
+
+                    <div class="stage">
+                        <div class="stage-header">Stage 2: Commission Agent Processing</div>
+                        <p><strong>Services:</strong> Arhatiya Commission (2-6%), Weighing Charges, Dharmada</p>
+                        <p><strong>Note:</strong> Commission agent services subject to GST under RCM.</p>
+                    </div>
+
+                    <div class="stage">
+                        <div class="stage-header">Stage 3: Miller → Biscuit Factory</div>
+                        <p><strong>Input:</strong> Wheat (0% GST) → <strong>Output:</strong> Wheat Flour (HSN: 1101) - 5% GST</p>
+                        <p><strong>Note:</strong> First stage where GST is levied on the good itself.</p>
+                    </div>
+
+                    <div class="stage">
+                        <div class="stage-header">Stage 4: Biscuit Manufacturing</div>
+                        <p><strong>Inputs:</strong> Flour (5%), Sugar (5%), Fats & Oils (12%), Chocolate (18%), Packaging (18%)</p>
+                        <p><strong>Note:</strong> Represents 'Inverted Duty Structure' - higher tax on inputs than output.</p>
+                    </div>
+
+                    <div class="stage">
+                        <div class="stage-header">Stage 5: Distribution & Retail</div>
+                        <p><strong>Output:</strong> Biscuits (HSN: 1905) - 18% GST</p>
+                        <p><strong>Note:</strong> Final product taxed at standard 18% rate with full ITC available.</p>
+                    </div>
+                </div>
+
+                <div class="value-chain" id="iron-steel">
+                    <h4>⛏️ Iron Ore to TMT Bars Value Chain (Industrial Archetype)</h4>
+
+                    <div class="stage">
+                        <div class="stage-header">Stage 1: Mining</div>
+                        <p><strong>Output:</strong> Iron Ore (HSN: 2601) - 5% GST</p>
+                        <p><strong>Hidden Charges:</strong> Royalty to Government, DMF levy</p>
+                        <p><strong>Note:</strong> GST applicable on royalty payments under RCM.</p>
+                    </div>
+
+                    <div class="stage">
+                        <div class="stage-header">Stage 2: Steel Manufacturing</div>
+                        <p><strong>Inputs:</strong> Iron Ore (5%), Coking Coal (5%), Limestone (5%)</p>
+                        <p><strong>Output:</strong> TMT Steel Bars (HSN: 7214) - 18% GST</p>
+                        <p><strong>Note:</strong> Major value addition with full ITC on inputs available.</p>
+                    </div>
+                </div>
+
+                <div class="value-chain" id="auto-assembly">
+                    <h4>🚗 Components to Passenger Car Value Chain (Assembly Archetype)</h4>
+
+                    <div class="stage">
+                        <div class="stage-header">Stage 1: Component Manufacturing</div>
+                        <p><strong>Inputs:</strong> Steel (18%), Plastics (18%)</p>
+                        <p><strong>Output:</strong> Auto Components (HSN: 8708) - 28% GST</p>
+                    </div>
+
+                    <div class="stage">
+                        <div class="stage-header">Stage 2: Vehicle Assembly</div>
+                        <p><strong>Inputs:</strong> Various Components (28%), Tyres (28%)</p>
+                        <p><strong>Output:</strong> Passenger Car (HSN: 8703) - 28% GST + Compensation Cess (1-22%)</p>
+                        <p><strong>Note:</strong> High taxation item with both GST and significant Cess component.</p>
+                    </div>
+                </div>
+
+                <div class="value-chain" id="cotton-textile">
+                    <h4>🧵 Cotton to T-Shirt Value Chain (Textile Archetype)</h4>
+
+                    <div class="stage">
+                        <div class="stage-header">Stage 1: Ginning & Spinning</div>
+                        <p><strong>Input:</strong> Raw Cotton (HSN: 5201) - 5% GST (RCM applicable)</p>
+                        <p><strong>Output:</strong> Cotton Yarn (HSN: 5205) - 5% GST</p>
+                        <p><strong>Note:</strong> Chain starts with 5% GST rate.</p>
+                    </div>
+
+                    <div class="stage">
+                        <div class="stage-header">Stage 2: Weaving & Processing</div>
+                        <p><strong>Inputs:</strong> Cotton Yarn (5%), Dyes & Chemicals (18%)</p>
+                        <p><strong>Output:</strong> Finished Fabric (HSN: 5208) - 5% GST</p>
+                        <p><strong>Note:</strong> Classic Inverted Duty Structure - inputs at 18%, output at 5%.</p>
+                    </div>
+
+                    <div class="stage">
+                        <div class="stage-header">Stage 3: Garmenting & Sale</div>
+                        <p><strong>Input:</strong> Finished Fabric (5%)</p>
+                        <p><strong>Output:</strong> T-Shirt (HSN: 6109) - 5% (≤₹1000) or 12% (>₹1000)</p>
+                        <p><strong>Note:</strong> Final GST rate depends on sale value.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="concepts" class="tab-content">
+                <h2>GST Concepts & Compliance</h2>
+
+                <h3 id="special-provisions">Special Provisions</h3>
+
+                <div class="compliance-item">
+                    <h4>Reverse Charge Mechanism (RCM)</h4>
+                    <p>The recipient of the supply is liable to pay GST instead of the supplier.</p>
+                    <p><strong>Applies to Goods:</strong> Cashew nuts, Bidi wrapper leaves, Tobacco leaves, Silk yarn, Raw cotton, Lottery</p>
+                    <p><strong>Applies to Services:</strong> GTA services, Legal services by advocates, Sponsorship services, Import of services</p>
+                </div>
+
+                <div class="compliance-item">
+                    <h4>Zero-Rated Supplies</h4>
+                    <p>Supplies that attract a 0% GST rate, but the supplier can claim Input Tax Credit (ITC).</p>
+                    <p><strong>Applies to:</strong> Exports of goods or services, Supplies to SEZ developer or unit</p>
+                </div>
+
+                <div class="compliance-item">
+                    <h4>Composition Scheme</h4>
+                    <p>A simplified GST scheme for smaller taxpayers with aggregate turnover up to ₹1.5 crore.</p>
+                    <p><strong>Conditions:</strong> Cannot make inter-state supplies, cannot supply through e-commerce, pays tax at fixed rate, no ITC can be claimed.</p>
+                </div>
+
+                <h3 id="compliance-calendar">Compliance Calendar</h3>
+
+                <div class="compliance-item">
+                    <h4>GSTR-1 - Statement of Outward Supplies</h4>
+                    <p><strong>Due Date:</strong> 11th of next month (monthly filers) or 13th of month succeeding quarter (QRMP scheme)</p>
+                </div>
+
+                <div class="compliance-item">
+                    <h4>GSTR-3B - Summary Return</h4>
+                    <p><strong>Due Date:</strong> 20th of next month</p>
+                    <p>Summary return of outward and inward supplies and payment of tax.</p>
+                </div>
+
+                <div class="compliance-item">
+                    <h4>GSTR-9 - Annual Return</h4>
+                    <p><strong>Due Date:</strong> 31st December of next financial year</p>
+                </div>
+
+                <h3 id="recent-updates">Recent Updates</h3>
+
+                <div class="update-item">
+                    <h4>Online Gaming Taxation</h4>
+                    <p>Online gaming, horse racing, and casinos are taxed at 28% on the full face value of the bet or deposit.</p>
+                </div>
+
+                <div class="update-item">
+                    <h4>E-invoicing Threshold</h4>
+                    <p>Mandatory e-invoicing for all registered persons whose aggregate turnover exceeds ₹5 crore in any preceding financial year.</p>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 GST Value Chain Mapping System. Generated from comprehensive JSON data structure.</p>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">Version 4.0 - A comprehensive mapping of GST structures across industries</p>
+        </div>
+    </footer>
+
+    <script>
+        // Sidebar functionality
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            const contentWrapper = document.getElementById('contentWrapper');
+
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+
+            if (window.innerWidth >= 1024) {
+                contentWrapper.classList.toggle('sidebar-open');
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            const contentWrapper = document.getElementById('contentWrapper');
+
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            contentWrapper.classList.remove('sidebar-open');
+        }
+
+        // Navigation functionality
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+
+                // Update active nav item
+                document.querySelectorAll('.nav-item, .sub-nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                // Close sidebar on mobile after navigation
+                if (window.innerWidth < 1024) {
+                    closeSidebar();
+                }
+            }
+        }
+
+        function showTab(tabName) {
+            // Switch to the tab first
+            const tabButton = document.querySelector(`button[onclick="switchTab('${tabName}', this)"]`);
+            if (tabButton) {
+                switchTab(tabName, tabButton);
+            }
+
+            // Close sidebar on mobile
+            if (window.innerWidth < 1024) {
+                closeSidebar();
+            }
+        }
+
+        function switchTab(tabName, button) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected tab content and activate button
+            document.getElementById(tabName).classList.add('active');
+            button.classList.add('active');
+        }
+
+        function searchServices(searchTerm) {
+            const serviceItems = document.querySelectorAll('.service-sector');
+            const searchLower = searchTerm.toLowerCase();
+
+            serviceItems.forEach(sector => {
+                const sectorText = sector.textContent.toLowerCase();
+                if (sectorText.includes(searchLower)) {
+                    sector.style.display = 'block';
+                } else {
+                    sector.style.display = 'none';
+                }
+            });
+        }
+
+        // Initialize sidebar state for desktop
+        window.addEventListener('load', function() {
+            const sidebar = document.getElementById('sidebar');
+            const contentWrapper = document.getElementById('contentWrapper');
+
+            if (window.innerWidth >= 1024) {
+                sidebar.classList.add('open');
+                contentWrapper.classList.add('sidebar-open');
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            const contentWrapper = document.getElementById('contentWrapper');
+
+            if (window.innerWidth >= 1024) {
+                sidebar.classList.add('open');
+                contentWrapper.classList.add('sidebar-open');
+                overlay.classList.remove('active');
+            } else {
+                sidebar.classList.remove('open');
+                contentWrapper.classList.remove('sidebar-open');
+                overlay.classList.remove('active');
+            }
+        });
+
+        // Add smooth scrolling for better UX
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
